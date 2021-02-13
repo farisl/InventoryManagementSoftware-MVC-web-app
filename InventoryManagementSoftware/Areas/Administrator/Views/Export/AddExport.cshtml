@@ -1,0 +1,148 @@
+﻿@using InventoryManagementSoftware.Service.DTO.Export;
+@model DTOExport;
+@inject InventoryManagementSoftware.Web.Helpers.Dropdown.IDropdown dropdown;
+
+
+@{
+    ViewData["Title"] = "AddExport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <h2>Add</h2>
+    <form asp-area="Administrator" role="form" asp-controller="Export" asp-action="saveExport" method="post">
+        <div class="row col-md-12">
+            <div class="form-group col-md-6">
+
+                <input asp-for="Id" type="hidden" />
+
+                <label>Date</label>
+                @if (Model.Id == 0)
+                {
+                    <input type="date" value="@DateTime.Now" asp-for="Date" class="form-control" />
+                }
+                else
+                {
+                    <input type="date" asp-for="Date" class="form-control" />
+                }
+            </div>
+            <div class="form-group col-md-6">
+                <label>Customer</label>
+                @if (Model.Id == 0)
+                {
+                    <select asp-for="CustomerId" asp-items="Model.Customers" class="form-control">
+                        <option>---Choose inventory---</option>
+                    </select>
+
+                }
+                else
+                {
+                    <select asp-for="CustomerId" asp-items="Model.Customers" class="form-control"></select>
+
+                }
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="form-group col-md-6">
+                <label>Inventory</label>
+                <select asp-for="InventoryId" asp-items="await dropdown.Inventories()" class="form-control">
+                    <option value="0">Choose inventory</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Employee</label>
+                <select asp-for="EmployeeId" disabled="disabled" class="form-control">
+                    <option>Choose employee</option>
+                </select>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <hr>
+            <h4>Products</h4>
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    <label>Product</label>
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Quantity</label>
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Discount</label>
+                </div>
+            </div>
+            <div class="mt-repeater">
+                <div data-repeater-list="exportProductList">
+                    <div data-repeater-item class="row col-md-12">
+                        <div class="form-group col-md-6">
+                            <select name="ProductId" asp-items="await dropdown.Products()" class="form-control">
+                                <option value="0">Choose a product</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input name="Quantity" type="number" value="0" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input name="Discount" type="number" value="0" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-1">
+                            <a href="javascript:;" data-repeater-delete class="btn btn-danger">
+                                <i class="fa fa-close"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-1">
+                        <a href="javascript:;" data-repeater-create class="btn btn-info mt-repeater-add">
+                            <i class="fa fa-plus"></i> Add
+                        </a>
+                    </div>
+                </div>
+                <br>
+                <br>
+            </div>
+            <hr>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    </form>
+</div>
+
+<script>
+
+    var inventory = $("[name = '@nameof(Model.InventoryId)']");
+    var employee = $("[name = '@nameof(Model.EmployeeId)']");
+
+    inventory.on("change",
+        function () {
+            employee.empty();
+
+            employee.prop("disabled", true);
+            employee.append($('<option value ="" />').html('Choose employee'));
+
+            if (inventory.prop('selectedIndex') !== 0) {
+                var inventoryId = inventory.val();
+                $.get("@Url.Action("GetEmployees", "Export")",
+                    { inventoryId: inventoryId },
+                    function (results) {
+                        if (results.length !== 0)
+                            employee.removeAttr("disabled");
+
+                        $.each(results, function (i, result) {
+                            var option = $('<option />');
+
+                            option.val(result.value);
+                            option.html(result.text);
+
+                            if (result.value === "@(Model.EmployeeId)")
+                                option.attr("selected", "selected");
+
+                            employee.append(option);
+                        });
+                    });
+            }
+
+        });
+
+</script>

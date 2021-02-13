@@ -1,0 +1,54 @@
+﻿@using InventoryManagementSoftware.Core.Models;
+@using InventoryManagementSoftware.Service.DTO.Supplier
+@model DTOSupplier
+
+@{
+    ViewData["Title"] = "AddEditSupplier";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <h2>Add/Edit</h2>
+    <form asp-area="User" asp-controller="Supplier" asp-action="saveSupplier" method="post">
+        <div class="form-group">
+
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="Address.Id" type="hidden" />
+            <input asp-for="PhoneNumber.Id" type="hidden" />
+            <input asp-for="EmailAddress.Id" type="hidden" />
+
+            <label>Name</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <input asp-for="Address.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>City</label>
+            @if (Model.Id == 0)
+            {
+                <select asp-for="Address.City.Id" asp-items="Model.Cities" class="form-control">
+                    <option>---Choose a city---</option>
+                </select>
+
+            }
+            else
+            {
+                <select asp-for="Address.City.Id" asp-items="Model.Cities" class="form-control"></select>
+
+            }
+
+        </div>
+        <div class="form-group">
+            <label>Phone number</label>
+            <input asp-for="PhoneNumber.Number" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input asp-for="EmailAddress.Email" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    </form>
+</div>
+

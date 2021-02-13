@@ -1,0 +1,43 @@
+﻿@using InventoryManagementSoftware.Service.DTO.Supplier;
+@model List<DTOSupplier>
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <h2>Suppliers</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone number</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DTOSupplier x in Model)
+            {
+            <tr>
+                <td>@x.Name</td>
+                <td>@x.Address.Name</td>
+                <td>@x.PhoneNumber.Number</td> 
+                <td>@x.EmailAddress.Email</td>
+                <td>
+                    <a asp-area="User" asp-action="editSupplier" asp-route-id="@x.Id" class="btn btn-primary">Edit</a>
+                    <a asp-area="User" asp-action="deleteSupplier" asp-route-id="@x.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <a asp-area="User" asp-controller="Supplier" asp-action="addSupplier" class="btn btn-success">Add</a>
+
+</div>
+

@@ -1,0 +1,57 @@
+﻿
+@using InventoryManagementSoftware.Service.DTO.Shelves
+@model List<DTOShelves>
+
+@{
+    ViewData["Title"] = "IndexShelves";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Shelves preview</h2>
+
+<div class="col-md-12">
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Row number</th>
+                <th>Inventory/Department</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DTOShelves x in Model)
+            {
+                <tr>
+                    <td>@x.Name</td>
+                    <td>@x.RowNumber</td>
+                    <td>@x.Department.Inventory.Name / @x.Department.Name </td>
+                    <td>
+                        <div class="page-toolbar">
+                            <div class="btn-group">
+                                <button type="button" class="btn blue dropdown-toggle" data-toggle="dropdown">
+                                    Actions
+                                    <i class="fa fa-angle-down"></i>
+                                </button>
+                                <ul class="dropdown-menu pull-right" role="menu">
+                                    <li>
+                                        <a asp-area="Administrator" asp-controller="Shelves" asp-action="Edit" asp-route-id="@x.Id" data-ajax-modal="true" data-ajax-modal-destination="basic">Edit</a>
+                                    </li>
+
+                                    <li class="divider"> </li>
+
+                                    <li class="bg-red-opacity">
+                                        <a asp-area="Administrator" asp-controller="Shelves" asp-action="Delete" asp-route-id="@x.Id">Delete</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-area="Administrator" asp-controller="Shelves" asp-action="Add" data-ajax-modal="true" data-ajax-modal-destination="basic" class="btn btn-success">Add</a>
+</div>

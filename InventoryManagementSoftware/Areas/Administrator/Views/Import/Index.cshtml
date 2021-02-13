@@ -1,0 +1,64 @@
+﻿@using InventoryManagementSoftware.Service.DTO.Import;
+@model List<DTOImport>
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int no = 1;
+}
+
+    <div class="col-md-12">
+        <h2>Imports</h2>
+        <br />
+
+        <form asp-controller="Import" asp-action="Index" method="post">
+            <div class="row input-group">
+                <input type="date" name="date" id="date" placeholder="Search by date..." class="form-control" />
+                <div class="input-group-btn">
+                    <input type="submit" value="Search" class="btn btn-primary" style="margin-right:20px;" />
+                </div>
+                <input type="text" name="search" id="search" placeholder="Search by inventory..." class="form-control" />
+                <div class="input-group-btn">
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+
+        <br />
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>Inventory</th>
+                    <th>Quantity</th>
+                    <th>Total price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DTOImport x in Model)
+                {
+                    <tr>
+                        <td>@(no++)</td>
+                        <td>@x.Date.Day/@x.Date.Month/@x.Date.Year</td>
+                        <td>@x.Inventory.Name</td>
+                        <td>@x.Quantity</td>
+                        <td>@x.TotalPrice</td>
+                        <td>
+                            <a asp-area="Administrator" asp-controller="Import" asp-action="Details" asp-route-id="@x.Id" data-ajax-modal="true" data-ajax-modal-destination="basic" class="btn btn-primary">Details</a>
+                            <a asp-area="Administrator" asp-action="editImport" asp-route-id="@x.Id" class="btn btn-primary">Edit</a>
+                            <a asp-area="Administrator" asp-action="deleteImport" asp-route-id="@x.Id" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <a asp-area="Administrator" asp-controller="Import" asp-action="addImport" class="btn btn-success">Add</a>
+
+    </div>
+

@@ -1,0 +1,38 @@
+﻿@using InventoryManagementSoftware.ViewModels;
+@model List<CityPreviewVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //var data = ViewData["key"] as List<City>;
+}
+
+<div class="col-md-12">
+    <h2>Cities</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Country</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (CityPreviewVM x in Model)
+            {
+                <tr>
+                    <td>@x.Name</td>
+                    <td>@x.Country</td>
+                    <td>
+                        <a asp-area="Administrator" asp-action="Edit" asp-route-id="@x.Id" data-ajax-modal="true" data-ajax-modal-destination="basic" class="btn btn-primary">Edit</a> 
+                        <a asp-area="Administrator" asp-action="Delete" asp-route-id="@x.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <a asp-area="Administrator" asp-controller="City" asp-action="Add" data-ajax-modal="true" data-ajax-modal-destination="basic" class="btn btn-success">Add</a>
+
+</div>

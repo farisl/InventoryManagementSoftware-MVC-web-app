@@ -1,0 +1,56 @@
+﻿@model List<InventoryManagementSoftware.Service.DTO.Product.DTOProduct>
+@inject InventoryManagementSoftware.Web.Resource localizer
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int no = 1;
+}
+
+    <div class="col-md-12">
+        <h2>@localizer.Products</h2>
+        <br />
+
+        <form asp-controller="Product" asp-action="Index" method="post">
+            <div class="row input-group">
+                <input type="text" name="search" id="search" placeholder="Search by name, brand, category..." class="form-control" />
+                <div class="input-group-btn">
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+
+        <br />
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>@localizer.No</th>
+                    <th>@localizer.Name</th>
+                    <th>@localizer.Description</th>
+                    <th>@localizer.Price</th>
+                    <th>@localizer.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in Model)
+                {
+                    <tr>
+                        <td>@(no++)</td>
+                        <td>@x.Name</td>
+                        <td>@x.Description</td>
+                        <td>@x.ProductPrice.Price</td>
+                        <td>
+                            <a asp-area="Administrator" asp-controller="Product" asp-action="Details" asp-route-productId="@x.Id" data-ajax-modal="true" data-ajax-modal-destination="basic" class="btn btn-primary">@localizer.Details</a>
+                            <a asp-area="Administrator" asp-controller="Product" asp-action="Edit" asp-route-id="@x.Id" class="btn btn-primary">@localizer.Edit</a>
+                            <a asp-area="Administrator" asp-controller="Product" asp-action="Delete" asp-route-productId="@x.Id" class="btn btn-danger">@localizer.Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <a asp-area="Administrator" asp-controller="Product" asp-action="Add" class="btn btn-success">@localizer.Add</a>
+    </div>
+
+
+

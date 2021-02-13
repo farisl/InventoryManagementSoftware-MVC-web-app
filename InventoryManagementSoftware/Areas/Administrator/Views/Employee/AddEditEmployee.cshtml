@@ -1,0 +1,122 @@
+﻿@using InventoryManagementSoftware.Service.DTO.Employee;
+@model DTOEmployee;
+
+@{
+    ViewData["Title"] = "AddEditCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <h2>Add/Edit</h2>
+    <form asp-area="Administrator" asp-controller="Employee" asp-action="saveEmployee" method="post">
+        <div class="row col-md-12">
+            <div class="form-group col-md-6">
+
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="AddressId" type="hidden" />
+                <input asp-for="Address.Id" type="hidden" />
+                <input asp-for="Username" type="hidden" />
+
+                <label>First name</label>
+                <input asp-for="FirstName" class="form-control" />
+            </div>
+            <div class="form-group col-md-6">
+                <label>Last name</label>
+                <input asp-for="LastName" class="form-control" />
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="form-group col-md-12">
+                <label>JMBG</label>
+                <input asp-for="JMBG" class="form-control" />
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="form-group col-md-6">
+                <label>Birthdate</label>
+                @if (Model.Id == 0)
+                {
+                    <input type="date" value="@DateTime.Now" asp-for="BirthDate" class="form-control" />
+                }
+                else
+                {
+                    <input type="date" asp-for="BirthDate" class="form-control" />
+                }
+
+            </div>
+            <div class="form-group col-md-6">
+                <label>Gender</label>
+                @if (Model.Id == 0)
+                {
+                    <select asp-for="GenderId" asp-items="Model.Genders" class="form-control">
+                        <option>---Choose a gender---</option>
+                    </select>
+
+                }
+                else
+                {
+                    <select asp-for="GenderId" asp-items="Model.Genders" class="form-control"></select>
+
+                }
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="form-group col-md-6">
+                <label>Address</label>
+                <input asp-for="Address.Name" class="form-control" />
+            </div>
+            <div class="form-group col-md-6">
+                <label>City</label>
+                @if (Model.Id == 0)
+                {
+                    <select asp-for="Address.City.Id" asp-items="Model.Cities" class="form-control">
+                        <option>---Choose a city---</option>
+                    </select>
+
+                }
+                else
+                {
+                    <select asp-for="Address.City.Id" asp-items="Model.Cities" class="form-control"></select>
+
+                }
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="form-group col-md-12">
+                <label>Email</label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="form-group col-md-12">
+                <label>Phone number</label>
+                <input asp-for="PhoneNumber" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row col-md-12">
+            <div class="form-group col-md-6">
+                <label>Inventory</label>
+                @if (Model.Id == 0 || Model.InventoryId == null)
+                {
+                    <select asp-for="InventoryId" asp-items="Model.Inventories" class="form-control">
+                        <option>---Choose an inventory---</option>
+                    </select>
+
+                }
+                else
+                {
+                    <select asp-for="InventoryId" asp-items="Model.Inventories" class="form-control"></select>
+
+                }
+            </div>
+            <div class="form-group col-md-6">
+                <label>Salary</label>
+                <input asp-for="Salary" class="form-control" />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    </form>
+</div>
+

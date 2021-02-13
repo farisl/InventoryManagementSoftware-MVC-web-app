@@ -1,0 +1,338 @@
+﻿@model InventoryManagementSoftware.Service.DTO.Product.DTOProduct
+@inject InventoryManagementSoftware.Web.Resource localizer
+@inject InventoryManagementSoftware.Web.Helpers.Dropdown.IDropdown dropdown
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form class="col-md-11 padding-fix" role="form" asp-area="Administrator" asp-controller="Product" asp-antiforgery="true" asp-action="Edit">
+
+    <h2>Uređivanje proizvoda * </h2>
+    <div class="col-md-12">
+        <div class="row col-md-12">
+            <hr>
+            <h4>Osnovni podaci *</h4>
+
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    <label>@localizer.Name</label>
+                    <input asp-for="Name" type="text" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>@localizer.Price</label>
+                    <input asp-for="ProductPrice.Price" type="text" class="form-control" />
+                    <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    <label>@localizer.Description</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <hr>
+            <h4>Opisni podaci *</h4>
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    <label>@localizer.Attribute</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>@localizer.Value</label>
+                </div>
+            </div>
+
+            <div class="mt-repeater">
+                <div data-repeater-list="productAttributeList">
+                    @for (var i = 0; i < Model.Attributes?.Count; i++)
+                    {
+                        <div data-repeater-item class="row col-md-12">
+                            <div class="form-group col-md-6">
+                                <select name="AttributeId" asp-for="@Model.Attributes[i].AttributeId" asp-items="await dropdown.Attributes()" class="form-control">
+                                    @if (Model.Attributes[i].AttributeId == 0)
+                                    {
+                                        <option value="0">---Choose attribute*---</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <input name="Value" asp-for="@Model.Attributes[i].Value" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-1">
+                                <a href="javascript:;" data-repeater-delete class="btn btn-danger">
+                                    <i class="fa fa-close"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-1">
+                        <a href="javascript:;" data-repeater-create class="btn btn-info mt-repeater-add">
+                            <i class="fa fa-plus"></i> Add*
+                        </a>
+                    </div>
+                </div>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <hr>
+            <h4>Podaci o proizvodjaču *</h4>
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    <label asp-for="CategoryBrand.BrandId">@localizer.Brand</label>
+                    <select asp-for="CategoryBrand.BrandId" asp-items="await dropdown.Brands()" class="form-control">
+                        @if (Model.CategoryBrand != null && Model.CategoryBrand.BrandId == 0)
+                        {
+                            <option value="0">@localizer.ChooseBrand</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryBrand.BrandId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="CategoryBrand.CategoryId">@localizer.Category</label>
+                    <select asp-for="CategoryBrand.CategoryId" asp-items="await dropdown.CategoriesByBrandId(Model.CategoryBrand.BrandId)" class="form-control">
+                        @if (Model.CategoryBrand.CategoryId == 0)
+                        {
+                            <option value="0">@localizer.ChooseCategory</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryBrand.CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <hr>
+            <h4>Opisni skladištu *</h4>
+            <div class="row col-md-12">
+                <div class="form-group col-md-3">
+                    <label>Inventory*</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Department*</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Shelf*</label>
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Quantity*</label>
+                </div>
+            </div>
+            <div class="mt-repeater">
+                <div data-repeater-list="productInventoryList">
+                    @if (Model.ProductShelves != null && Model.ProductShelves.Any())
+                    {
+                        @for (int i = 0; i < Model.ProductShelves?.Count; i++)
+                        {
+                            <div data-repeater-item class="row col-md-12 product-inventory-item">
+                                <div class="form-group col-md-3">
+                                    <select name="InventoryId" asp-for="ProductShelves[i].Shelf.Department.Inventory.Id" asp-items="await dropdown.Inventories()" class="form-control product-inventory">
+                                        @if (Model.ProductShelves[i].Shelf.Department.Inventory.Id == 0)
+                                        {
+                                            <option value="0">@localizer.ChooseInventory</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <select name="DepartmentId" asp-for="ProductShelves[i].Shelf.Department.Id" asp-items="await dropdown.DepartmentsByInventoryId(Model.ProductShelves[i].Shelf.Department.Inventory.Id)" class="form-control product-department">
+                                        @if (Model.ProductShelves[i].Shelf.Department.Id == 0)
+                                        {
+                                            <option value="0">@localizer.ChooseDepartment</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <select name="ShelfId" asp-for="ProductShelves[i].Shelf.Id" asp-items="await dropdown.ShelvesByDepartmentId(Model.ProductShelves[i].Shelf.Department.Id)" class="form-control product-shelf">
+                                        @if (Model.ProductShelves[i].Shelf.Id == 0)
+                                        {
+                                            <option value="0">@localizer.ChooseShelf</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input name="Quantity" asp-for="@Model.ProductShelves[i].Quantity" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <a href="javascript:;" data-repeater-delete class="btn btn-danger">
+                                        <i class="fa fa-close"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        }
+                    }
+                    else
+                    {
+                        <div data-repeater-item class="row col-md-12 product-inventory-item">
+                            <div class="form-group col-md-3">
+                                <select name="InventoryId" asp-items="await dropdown.Inventories()" class="form-control product-inventory">
+                                    <option value="0">@localizer.ChooseInventory</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <select name="DepartmentId" disabled="disabled" class="form-control product-department">
+                                    <option>@localizer.ChooseDepartment</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <select name="ShelfId" disabled="disabled" class="form-control product-shelf">
+                                    <option>@localizer.ChooseShelf</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <input name="Quantity" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-1">
+                                <a href="javascript:;" data-repeater-delete class="btn btn-danger">
+                                    <i class="fa fa-close"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="row col-md-12">
+                    <div class="col-md-1">
+                        <a href="javascript:;" data-repeater-create class="btn btn-info mt-repeater-add">
+                            <i class="fa fa-plus"></i> Add*
+                        </a>
+                    </div>
+                </div>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <hr />
+            <button type="submit" class="btn green">@localizer.Save</button>
+        </div>
+    </div>
+
+</form>
+
+
+
+<script>
+
+    var category = $("[name = '@nameof(Model.CategoryBrand).@nameof(Model.CategoryBrand.CategoryId)']");
+    var brand = $("[name = '@nameof(Model.CategoryBrand).@nameof(Model.CategoryBrand.BrandId)']");
+
+    $(document.body).on("change", ".product-inventory",
+            function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+
+                var department = $(this).closest(".product-inventory-item").find('.product-department');
+                var shelf = $(this).closest(".product-inventory-item").find('.product-shelf');
+
+                department.empty();
+                department.prop("disabled", true);
+
+                shelf.empty();
+                shelf.prop("disabled", true);
+
+                department.append($('<option value=""/>').html('@localizer.ChooseDepartment'));
+                shelf.append($('<option value=""/>').html('@localizer.ChooseShelf'));
+
+                if ($(this).prop('selectedIndex') !== 0) {
+
+                    var inventoryId = $(this).val();
+                    $.get("@Url.Action("GetDepartments", "Product")",
+                        { inventoryId: inventoryId },
+                        function (results) {
+                            if (results.length !== 0) {
+                                department.removeAttr('disabled');
+                            }
+
+
+                            $.each(results, function (i, result) {
+                                var option = $("<option />");
+                                option.val(result.value);
+                                option.html(result.text);
+
+                                if (result.value === department.val)
+                                    option.attr("selected", "selected");
+
+                                department.append(option);
+                            });
+                        });
+                }
+        });
+    $(document.body).on("change", ".product-department",
+            function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+
+                var shelf = $(this).closest(".product-inventory-item").find('.product-shelf');
+                shelf.empty();
+
+            shelf.prop("disabled", true);
+            shelf.append($('<option value="" />').html('@localizer.ChooseShelf'));
+
+            if ($(this).prop('selectedIndex') !== 0) {
+                var departmentId = $(this).val();
+                $.get("@Url.Action("GetShelves", "Product")",
+                    { departmentId: departmentId },
+                    function (results) {
+                        if (results.length !== 0)
+                            shelf.removeAttr('disabled');
+
+                        $.each(results, function (i, result) {
+                            var option = $("<option />");
+
+                            option.val(result.value);
+                            option.html(result.text);
+
+                            if (result.value === shelf.val)
+                                option.attr("selected", "selected");
+
+                            shelf.append(option);
+
+                        });
+                    });
+            }
+        });
+
+
+    brand.on("change",
+        function () {
+            category.empty();
+
+            category.prop("disabled", true);
+            category.append($('<option value ="" />').html('@localizer.ChooseCategory'));
+
+            if (brand.prop('selectedIndex') !== 0) {
+                var brandId = brand.val();
+                $.get("@Url.Action("GetCategories", "Product")",
+                    { brandId: brandId },
+                    function (results) {
+                        if (results.length !== 0)
+                            category.removeAttr("disabled");
+
+                        $.each(results, function (i, result) {
+                            var option = $('<option />');
+
+                            option.val(result.value);
+                            option.html(result.text);
+
+                            if (result.value === "@(Model.CategoryId)")
+                                option.attr("selected", "selected");
+
+                            category.append(option);
+                        });
+                    });
+            }
+
+        });
+
+</script>

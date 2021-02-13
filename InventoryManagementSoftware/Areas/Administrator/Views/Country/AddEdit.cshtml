@@ -1,0 +1,31 @@
+﻿@using InventoryManagementSoftware.Core.Models;
+@model Country
+
+@{
+    ViewData["Title"] = "Add country";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">Add/Edit Country</h4>
+</div>
+
+<form asp-area="Administrator" asp-controller="Country" asp-action="Save">
+    <div class="modal-body">
+        <div class="form-group">
+            <input asp-for="Id" type="hidden" />
+
+            <label>Name</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn red btn-outline" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn green">Save changes</button>
+    </div>
+</form>
+</div>

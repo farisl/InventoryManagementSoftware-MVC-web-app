@@ -1,0 +1,62 @@
+﻿@using InventoryManagementSoftware.Service.DTO.Department
+@model List<DTODepartment>
+
+@{
+    ViewData["Title"] = "IndexDepartment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Departments</h2>
+<div class="col-md-12">
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Inventory</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DTODepartment x in Model)
+            {
+                <tr>
+                    <td>@x.Name</td>
+                    <td>@x.Size</td>
+                    <td>@x.Inventory.Name</td>
+                    <td>
+                        <div class="page-toolbar">
+                            <div class="btn-group">
+                                <button type="button" class="btn blue dropdown-toggle" data-toggle="dropdown">
+                                    Actions
+                                    <i class="fa fa-angle-down"></i>
+                                </button>
+                                <ul class="dropdown-menu pull-right" role="menu">
+                                    <li>
+                                        <a asp-area="Administrator" asp-controller="Department" asp-action="Edit" asp-route-id="@x.Id" data-ajax-modal="true" data-ajax-modal-destination="basic">Edit</a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="Administrator" asp-controller="Shelves" asp-action="Add" asp-route-DepartmentId="@x.Id" data-ajax-modal="true" data-ajax-modal-destination="basic">Add shelves</a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="Administrator" asp-controller="Shelves" asp-action="Index" asp-route-DepartmentID="@x.Id">View shelves</a>
+                                    </li>
+                                    <li class="divider"> </li>
+
+                                    <li class="bg-red-opacity">
+                                        <a asp-area="Administrator" asp-controller="Department" asp-action="Delete" asp-route-id="@x.Id">Delete</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-area="Administrator" asp-controller="Department" asp-action="Add" data-ajax-modal="true" data-ajax-modal-destination="basic" class="btn btn-success">Add</a>
+</div>
+
+

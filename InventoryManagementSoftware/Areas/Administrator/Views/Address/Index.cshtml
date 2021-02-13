@@ -1,0 +1,38 @@
+﻿@using InventoryManagementSoftware.ViewModels;
+@model List<AddressPreviewVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <h2>Addresses</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>City</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (AddressPreviewVM x in Model)
+            {
+                <tr>
+                    <td>@x.Name</td>
+                    <td>@x.City</td>
+                    <td>
+                        <a asp-area="Administrator" asp-action="Edit" asp-route-id="@x.Id" class="btn btn-primary">Edit</a> 
+                       
+                        <a asp-area="Administrator" asp-action="Delete" asp-route-id="@x.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <a asp-area="Administrator" asp-controller="Address" asp-action="Add" class="btn btn-success">Add</a> 
+
+</div>

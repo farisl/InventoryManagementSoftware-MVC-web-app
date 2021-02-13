@@ -1,0 +1,55 @@
+﻿@using InventoryManagementSoftware.Service.DTO.Customer;
+@model List<DTOCustomer>
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="col-md-12">
+        <h2>Customers</h2>
+        <br />
+
+        <form asp-controller="Customer" asp-action="Index" method="post">
+            <div class="row input-group">
+                <input type="text" name="search" id="search" placeholder="Search by name..." class="form-control" />
+                <div class="input-group-btn">
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+
+        <br />
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone number</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DTOCustomer x in Model)
+                {
+                    <tr>
+                        <td>@x.Name</td>
+                        <td>@x.Address.Name</td>
+                        <td>@x.PhoneNumber.Number</td>
+                        <td>@x.EmailAddress.Email</td>
+                        <td>
+                            <a asp-area="Administrator" asp-action="editCustomer" asp-route-id="@x.Id" class="btn btn-primary">Edit</a>
+                            <a asp-area="Administrator" asp-action="deleteCustomer" asp-route-id="@x.Id" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <a asp-area="Administrator" asp-controller="Customer" asp-action="addCustomer" class="btn btn-success">Add</a>
+
+    </div>
+

@@ -1,0 +1,148 @@
+﻿@using InventoryManagementSoftware.Service.DTO.Import;
+@model DTOImport;
+@inject InventoryManagementSoftware.Web.Helpers.Dropdown.IDropdown dropdown;
+
+
+@{ ViewData["Title"] = "EditImport";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="col-md-12">
+    <h2>Edit Import</h2>
+    <form asp-area="Administrator" asp-controller="Import" asp-action="saveImport" method="post">
+        <div class="row col-md-12">
+            <div class="form-group col-md-6">
+
+                <input asp-for="Id" type="hidden" />
+
+                <label>Date</label>
+                @if (Model.Id == 0)
+                {
+    <input type="date" value="@DateTime.Now" asp-for="Date" class="form-control" /> }
+                else
+                {
+    <input type="date" asp-for="Date" class="form-control" />}
+            </div>
+            <div class="form-group col-md-6">
+                <label>Supplier</label>
+                @if (Model.Id == 0)
+                {
+    <select asp-for="SupplierId" asp-items="Model.Suppliers" class="form-control">
+        <option>---Choose inventory---</option>
+    </select> }
+                else
+                {
+    <select asp-for="SupplierId" asp-items="Model.Suppliers" class="form-control"></select>}
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="form-group col-md-6">
+                <label>Inventory</label>
+                <select asp-for="InventoryId" asp-items="await dropdown.Inventories()" class="form-control">
+                    @if (Model.Id == 0)
+                    {
+        <option value="0">Choose inventory</option>}
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Employee</label>
+                <select asp-for="EmployeeId" asp-items="await dropdown.EmployeesByInventoryId(Model.InventoryId)" class="form-control">
+                    @if (Model.Id == 0)
+                    {
+        <option value="0">Choose employee</option>}
+                </select>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <hr>
+            <h4>Products</h4>
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    <label>Product</label>
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Quantity</label>
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Discount</label>
+                </div>
+            </div>
+            <div class="mt-repeater">
+                <div data-repeater-list="ImportProductList">
+                    @for (var i = 0; i < Model.ImportDetails?.Count; i++)
+                    {
+        <div data-repeater-item class="row col-md-12">
+            <div class="form-group col-md-6">
+                <select name="ProductId" asp-for="ImportDetails[i].ProductId" asp-items="await dropdown.Products()" class="form-control">
+                    @if (Model.ImportDetails[i].ProductId == 0)
+                    {
+    <option value="0">Choose a product</option>}
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <input asp-for="ImportDetails[i].Quantity" name="Quantity" type="number" class="form-control" />
+            </div>
+            <div class="form-group col-md-2">
+                <input asp-for="ImportDetails[i].Discount" name="Discount" type="number" class="form-control" />
+            </div>
+            <div class="form-group col-md-1">
+                <a href="javascript:;" data-repeater-delete class="btn btn-danger">
+                    <i class="fa fa-close"></i>
+                </a>
+            </div>
+        </div>}
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-1">
+                        <a href="javascript:;" data-repeater-create class="btn btn-info mt-repeater-add">
+                            <i class="fa fa-plus"></i> Add
+                        </a>
+                    </div>
+                </div>
+                <br>
+                <br>
+            </div>
+            <hr>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    </form>
+</div>
+
+<script>
+
+    var inventory = $("[name = '@nameof(Model.InventoryId)']");
+    var employee = $("[name = '@nameof(Model.EmployeeId)']");
+
+    inventory.on("change",
+        function () {
+            employee.empty();
+
+            employee.prop("disabled", true);
+            employee.append($('<option value ="" />').html('Choose employee'));
+
+            if (inventory.prop('selectedIndex') !== 0) {
+                var inventoryId = inventory.val();
+                $.get("@Url.Action("GetEmployees", "Import")",
+                    { inventoryId: inventoryId },
+                    function (results) {
+                        if (results.length !== 0)
+                            employee.removeAttr("disabled");
+
+                        $.each(results, function (i, result) {
+                            var option = $('<option />');
+
+                            option.val(result.value);
+                            option.html(result.text);
+
+                            if (result.value === "@(Model.EmployeeId)")
+                                option.attr("selected", "selected");
+
+                            employee.append(option);
+                        });
+                    });
+            }
+
+        });
+
+</script>

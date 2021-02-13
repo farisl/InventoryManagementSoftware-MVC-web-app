@@ -1,0 +1,87 @@
+﻿@model InventoryManagementSoftware.Web.ViewModels.VMLogin
+@{
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+    ViewData["Title"] = localizer.Login;
+}
+    <div class="login-content">
+        @if (TempData["success"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                <div class="alert-text">@TempData["success"]</div>
+                <div class="alert-close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><i class="la la-close"></i></span>
+                    </button>
+                </div>
+            </div>
+        }
+        @if (TempData["error"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                <div class="alert-text">@TempData["error"]</div>
+                <div class="alert-close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><i class="la la-close"></i></span>
+                    </button>
+                </div>
+            </div>
+        }
+        <h1>Inventory Management Software</h1>
+        <p> Lorem ipsum dolor sit amet, coectetuer adipiscing elit sed diam nonummy et nibh euismod aliquam erat volutpat. Lorem ipsum dolor sit amet, coectetuer adipiscing. </p>
+
+        <form asp-action="Login" asp-controller="Auth" class="login-form" method="post">
+            <div class="alert alert-danger display-hide">
+                <button class="close" data-close="alert"></button>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" placeholder="@localizer.Email" asp-for="Email" autocomplete="off">
+                    <span asp-validation-for="Email" class="form-text text-danger"></span>
+                </div>
+                <div class="col-xs-6">
+                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" placeholder="@localizer.Password" asp-for="Password" />
+                    <span asp-validation-for="Password" class="form-text text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-right">
+                    <div class="forgot-password">
+                        <a href="#" class="kt-link kt-login__link-forgot">
+                            @localizer.ForgotPassword ?
+                        </a>
+                    </div>
+                    <button class="btn green" type="submit">@localizer.Login</button>
+                </div>
+            </div>
+        </form>
+    </div>
+<div class="login-footer">
+    <div class="row bs-reset">
+        <div class="col-xs-5 bs-reset">
+            <ul class="login-social">
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-social-facebook"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-social-twitter"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-social-dribbble"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-7 bs-reset">
+            <div class="login-copyright text-right">
+                <p>Copyright &copy; Omar Lapo, Faris Lekić 2020</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+

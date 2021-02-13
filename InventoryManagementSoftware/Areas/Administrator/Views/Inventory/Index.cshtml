@@ -1,0 +1,69 @@
+﻿@using InventoryManagementSoftware.Core.Models
+@model List<Inventory>
+
+@{
+    ViewData["Title"] = "IndexInventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <h2>Inventory Preview</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone number</th>
+                <th>Size</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Inventory i in Model)
+            {
+                <tr>
+                    <td>@i.Name</td>
+                    <td>@i.Address.Name , @i.Address.City.Name</td>
+                    <td>@i.PhoneNumber.Number</td>
+                    <td>@i.Size m2</td>
+                    <td>
+                        <div class="page-toolbar">
+                            <div class="btn-group">
+                                <button type="button" class="btn blue dropdown-toggle" data-toggle="dropdown">
+                                    Actions
+                                    <i class="fa fa-angle-down"></i>
+                                </button>
+                                <ul class="dropdown-menu pull-right" role="menu">
+                                    <li>
+                                        <a asp-area="Administrator" asp-controller="Inventory" asp-action="Edit" data-ajax-modal="true" data-ajax-modal-destination="basic"  asp-route-id="@i.Id">Edit</a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="Administrator" asp-controller="Department" asp-action="Add" asp-route-InventoryId="@i.Id" data-ajax-modal="true" data-ajax-modal-destination="basic">Add department</a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="Administrator" asp-controller="Department" asp-action="Index" asp-route-InventoryID="@i.Id">View departments</a>
+                                    </li>
+                                    <li class="divider"> </li>
+
+                                    <li class="bg-red-opacity">
+                                        <a asp-area="Administrator" asp-controller="Inventory" asp-action="Delete" asp-route-id="@i.Id">Delete</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+    <a asp-area="Administrator" asp-controller="Inventory" asp-action="Add" data-ajax-modal="true" data-ajax-modal-destination="basic"  class="btn btn-success">Add</a>
+
+
+</div>
+
+
+

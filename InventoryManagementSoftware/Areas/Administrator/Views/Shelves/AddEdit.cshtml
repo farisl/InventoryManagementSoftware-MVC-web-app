@@ -1,0 +1,61 @@
+﻿@model InventoryManagementSoftware.Service.DTO.Shelves.DTOShelves
+
+@{
+    ViewData["Title"] = "AddEditShelves";
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">Add/Edit Shelves</h4>
+</div>
+
+<form asp-area="Administrator" asp-controller="Shelves" asp-action="Save" method="post">
+    <div class="modal-body">
+
+        <input asp-for="Id" type="hidden" class="form-control" />
+
+
+        <div class="form-group">
+            <label>Name</label>
+            <input asp-for="Name" type="text" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Row number</label>
+            <input asp-for="RowNumber" type="number" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Inventory</label>
+            @if (Model.Id == 0)
+            {
+                <select asp-for="Department.Inventory.Id" asp-items="Model.Inventories" class="form-control">
+                    <option>---Choose inventory---</option>
+                </select>
+            }
+            else
+            {
+                <select asp-for="Department.Inventory.Id" asp-items="Model.Inventories" class="form-control"></select>
+            }
+        </div>
+        <div class="form-group">
+            <label>Department</label>
+            @if (Model.Id == 0)
+            {
+                <select asp-for="Department.Id" asp-items="Model.Departments" class="form-control">
+                    <option>---Choose inventory---</option>
+                </select>
+            }
+            else
+            {
+                <select asp-for="Department.Id" asp-items="Model.Departments" class="form-control"></select>
+            }
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn red btn-outline" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn green">Save changes</button>
+    </div>
+
+</form>
+

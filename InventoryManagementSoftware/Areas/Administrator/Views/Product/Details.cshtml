@@ -1,0 +1,49 @@
+﻿@model InventoryManagementSoftware.Service.DTO.Product.DTOProduct
+@inject InventoryManagementSoftware.Web.Resource localizer
+@{
+    Layout = null;
+}
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">@localizer.Details</h4>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <input asp-for="Id" type="hidden" />
+        <label>@localizer.Name</label>
+        <input asp-for="Name" class="form-control" disabled="disabled" />
+        <label>@localizer.Price</label>
+        <input asp-for="ProductPrice.Price" class="form-control" disabled="disabled" />
+    </div>
+    <div class="form-group">
+        <label>@localizer.Description</label>
+        <textarea asp-for="Description" class="form-control" disabled="disabled"></textarea>
+    </div>
+    <div class="form-group">
+        <label>@localizer.Attributes</label>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>@localizer.Attribute</th>
+                    <th>@localizer.Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var attr in Model.Attributes)
+                {
+                    <tr>
+                        <td>@attr.Attribute.Name</td>
+                        <td>@attr.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn red btn-outline" data-dismiss="modal">Close</button>
+</div>
+
+

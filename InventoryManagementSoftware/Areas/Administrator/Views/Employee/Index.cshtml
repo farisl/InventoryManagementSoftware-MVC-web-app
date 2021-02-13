@@ -1,0 +1,57 @@
+﻿@using InventoryManagementSoftware.Service.DTO.Employee;
+@model List<DTOEmployee>
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="col-md-12">
+        <h2>Emplyoees</h2>
+        <br />
+
+        <form asp-controller="Employee" asp-action="Index" method="post">
+            <div class="row input-group">
+                <input type="text" name="search" id="search" placeholder="Search by name..." class="form-control" />
+                <div class="input-group-btn">
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+
+        <br />
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Full name</th>
+                    <th>Username</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Inventory</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DTOEmployee x in Model)
+                {
+                    <tr>
+                        <td>@x.FullName</td>
+                        <td>@x.Username</td>
+                        <td>@x.Age</td>
+                        <td>@x.Gender.Name.Substring(0, 1)</td>
+                        <td>@x.Inventory</td>
+                        <td>
+                            <a asp-area="Administrator" asp-action="editEmployee" asp-route-id="@x.Id" class="btn btn-primary">Edit</a>
+                            <a asp-area="Administrator" asp-action="deleteEmployee" asp-route-id="@x.Id" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <a asp-area="Administrator" asp-controller="Employee" asp-action="addEmployee" class="btn btn-success">Add</a>
+
+    </div>
+

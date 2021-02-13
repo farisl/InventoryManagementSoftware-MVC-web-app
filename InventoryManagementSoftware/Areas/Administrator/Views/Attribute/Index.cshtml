@@ -1,0 +1,34 @@
+﻿@model List<InventoryManagementSoftware.Service.DTO.Attribute.DTOAttribute>
+@inject InventoryManagementSoftware.Web.Resource localizer
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <h2>@localizer.Attributes</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@localizer.Name</th>
+                <th>@localizer.Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.Name</td>
+                    <td>
+                        <a asp-area="Administrator" asp-controller="Attribute" asp-action="Edit" asp-route-id="@x.Id" data-ajax-modal="true" data-ajax-modal-destination="basic" class="btn btn-primary">@localizer.Edit</a>
+                        <a asp-area="Administrator" asp-controller="Attribute" asp-action="Delete" asp-route-id="@x.Id" class="btn btn-danger">@localizer.Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <a asp-area="Administrator" asp-controller="Attribute" asp-action="Add" data-ajax-modal="true" data-ajax-modal-destination="basic" class="btn btn-success">@localizer.Add</a>
+</div>
+
